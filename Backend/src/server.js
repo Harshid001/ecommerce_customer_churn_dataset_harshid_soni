@@ -2,7 +2,11 @@ const app = require('./app');
 const env = require('./config/env');
 const { connectDatabase, disconnectDatabase } = require('./config/database');
 
-let server;
+if (process.env.VERCEL) {
+  connectDatabase().catch(console.error);
+  module.exports = app;
+} else {
+  let server;
 
 const startServer = async () => {
   await connectDatabase();
@@ -44,7 +48,8 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-startServer().catch((error) => {
-  console.error('Failed to start server:', error.message);
-  process.exit(1);
-});
+  startServer().catch((error) => {
+    console.error('Failed to start server:', error.message);
+    process.exit(1);
+  });
+}

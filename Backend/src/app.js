@@ -27,7 +27,8 @@ if (env.nodeEnv !== 'test') {
 
 app.use(requestLogger);
 app.use(generalLimiter);
-app.use(routes);
+app.use('/api', routes);
+app.use('/', routes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
